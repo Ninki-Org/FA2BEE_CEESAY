@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FA2BEE Admin Dashboard - Manager Access Only</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.9);
+            padding: 25px 50px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #D4AF37;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo .fa2bee-text {
+            font-variant-numeric: normal;
+            font-feature-settings: normal;
+        }
+
+        .logo-placeholder {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #D4AF37, #B8941F);
+            border: 2px solid #D4AF37;
+            border-radius: 8px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .logo-placeholder::before {
+            content: "LOGO";
+            font-size: 8px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            position: relative;
+        }
+
+        .nav-links li {
+            margin: 0 20px;
+        }
+
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #D4AF37;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(20, 20, 20, 0.95);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            padding: 10px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 12px 20px;
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(212, 175, 55, 0.1);
+            color: #D4AF37;
+        }
+
+        .menu-toggle {
+            display: none;
+            color: #D4AF37;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Admin-specific styles */
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 120px 20px 40px;
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, rgba(12, 12, 12, 0.95) 0%, rgba(26, 26, 26, 0.95) 100%);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            color: #ccc;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .admin-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+        
+        .admin-title h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #D4AF37;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .admin-title p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1rem;
+            color: #ccc;
+        }
+        
+        .admin-status {
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #D4AF37;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(12, 12, 12, 0.95) 0%, rgba(26, 26, 26, 0.95) 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #D4AF37;
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #D4AF37;
+            margin-bottom: 0.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .stat-label {
+            color: #ccc;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .orders-section {
+            background: linear-gradient(135deg, rgba(12, 12, 12, 0.95) 0%, rgba(26, 26, 26, 0.95) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .orders-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+        
+        .orders-header {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05));
+            color: #ccc;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .orders-title h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #D4AF37;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .orders-title p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .orders-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .orders-content {
+            padding: 1.5rem;
+        }
+        
+        .order-item {
+            background: linear-gradient(135deg, rgba(12, 12, 12, 0.95) 0%, rgba(26, 26, 26, 0.95) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .order-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+            z-index: -1;
+        }
+        
+        .order-item:hover {
+            border-color: #D4AF37;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .order-service {
+            font-weight: 600;
+            color: var(--primary-purple);
+            font-size: 1.1rem;
+        }
+        
+        .order-total {
+            font-weight: 700;
+            color: var(--primary-black);
+            font-size: 1.2rem;
+        }
+        
+        .order-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--medium-gray);
+        }
+        
+        .order-detail {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .order-detail strong {
+            color: var(--primary-black);
+        }
+        
+        .no-orders {
+            text-align: center;
+            padding: 3rem;
+            color: var(--medium-gray);
+            font-style: italic;
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(135deg, #D4AF37, #D4AF37);
+            color: #000;
+            border: 2px solid #D4AF37;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .password-form {
+            background: linear-gradient(135deg, rgba(12, 12, 12, 0.95) 0%, rgba(26, 26, 26, 0.95) 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            max-width: 400px;
+            margin: 2rem auto;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            color: #ccc;
+            position: relative;
+        }
+
+        .password-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .password-form h2 {
+            color: #D4AF37;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1rem;
+        }
+
+        .password-form p {
+            color: #ccc;
+            margin-bottom: 1.5rem;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(30, 30, 30, 0.8);
+            color: #ccc;
+        }
+        
+        .password-input:focus {
+            outline: none;
+            border-color: #D4AF37;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, #D4AF37, #D4AF37);
+            color: #000;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .error-message {
+            color: #EF4444;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Management Tabs */
+        .management-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--primary-yellow);
+        }
+        
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--medium-gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab-btn.active {
+            color: var(--primary-purple);
+            border-bottom-color: var(--primary-purple);
+        }
+        
+        .tab-btn:hover {
+            color: var(--primary-purple);
+            background: rgba(139, 92, 246, 0.1);
+        }
+        
+        /* Management Sections */
+        .management-section {
+            background: linear-gradient(135deg, rgba(12, 12, 12, 0.95) 0%, rgba(26, 26, 26, 0.95) 100%);
+            border-radius: 12px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .management-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+        
+        .section-header {
+            background: var(--gradient-brand);
+            color: var(--primary-black);
+            padding: 1.5rem;
+        }
+        
+        .section-header h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+        }
+        
+        .section-header p {
+            margin: 0;
+            opacity: 0.8;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-black);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .submit-btn {
+            background: var(--gradient-brand);
+            color: var(--primary-black);
+            border: 2px solid var(--primary-yellow);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        /* Data Actions */
+        .data-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+        
+        .action-card {
+            background: var(--light-gray);
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .action-card:hover {
+            border-color: var(--primary-purple);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .action-card h4 {
+            margin: 0 0 0.5rem 0;
+            color: var(--primary-black);
+            font-size: 1.2rem;
+        }
+        
+        .action-card p {
+            margin: 0 0 1rem 0;
+            color: var(--medium-gray);
+            font-size: 0.9rem;
+        }
+        
+        .action-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .action-btn.primary {
+            background: #D4AF37;
+            color: #000;
+        }
+        
+        .action-btn.warning {
+            background: #F59E0B;
+            color: #000;
+        }
+        
+        .action-btn.danger {
+            background: #EF4444;
+            color: #fff;
+        }
+        
+        .action-btn.success {
+            background: #10B981;
+            color: #fff;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        .action-btn.primary:hover {
+            background: #B8941F;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+        }
+        
+        /* Messages */
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+        
+        .message.success {
+            background: #D1FAE5;
+            color: #065F46;
+            border: 1px solid #10B981;
+        }
+        
+        .message.error {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #EF4444;
+        }
+        
+        /* Filter Section Styles */
+        .filters-section {
+            background: #F8FAFC;
+            border-bottom: 1px solid #E5E7EB;
+            padding: 1.5rem;
+        }
+        
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .filter-group label {
+            font-weight: 600;
+            color: var(--primary-black);
+            font-size: 0.9rem;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            padding: 0.75rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .filter-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .filter-btn {
+            background: #6B7280;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover {
+            background: #4B5563;
+            transform: translateY(-1px);
+        }
+        
+        .order-count {
+            font-weight: 600;
+            color: var(--primary-purple);
+            font-size: 0.9rem;
+        }
+        
+        /* Enhanced Order Item Styles */
+        .order-item {
+            background: linear-gradient(135deg, rgba(12, 12, 12, 0.95) 0%, rgba(26, 26, 26, 0.95) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .order-item:hover {
+            border-color: var(--primary-purple);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .order-item.urgent {
+            border-left: 4px solid #EF4444;
+            background: #FEF2F2;
+        }
+        
+        .order-item.express {
+            border-left: 4px solid #F59E0B;
+            background: #FFFBEB;
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .order-service {
+            font-weight: 700;
+            color: var(--primary-purple);
+            font-size: 1.2rem;
+        }
+        
+        .order-total {
+            font-weight: 700;
+            color: var(--primary-black);
+            font-size: 1.3rem;
+        }
+        
+        .order-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .action-btn-small {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn-small.primary {
+            background: #D4AF37;
+            color: #000;
+        }
+        
+        .action-btn-small.success {
+            background: #10B981;
+            color: #fff;
+        }
+        
+        .action-btn-small.warning {
+            background: #F59E0B;
+            color: #000;
+        }
+        
+        .action-btn-small.danger {
+            background: #EF4444;
+            color: #fff;
+        }
+        
+        .action-btn-small:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Order Status Badge */
+        .order-status {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .order-total {
+            font-weight: 700;
+            color: var(--primary-black);
+            font-size: 1.3rem;
+        }
+        
+        .order-status.urgent {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .order-status.express {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        
+        .order-status.normal {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 20px;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 10, 10, 0.95);
+                flex-direction: column;
+                padding: 20px 0;
+                border-top: 1px solid rgba(212, 175, 55, 0.3);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 15px 0;
+                text-align: center;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .admin-container {
+                padding: 100px 20px 40px;
+            }
+
+            .admin-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-container {
+                padding: 90px 15px 30px;
+            }
+
+            .password-form {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .admin-header {
+                padding: 1.5rem;
+            }
+
+            .admin-title h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <div class="logo-placeholder"></div> <span class="fa2bee-text">FA2BEE</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#services">Services <i class="fas fa-chevron-down" style="margin-left: 8px; font-size: 12px;"></i></a>
+                <div class="dropdown-content">
+                    <a href="laundry-cleaning.html">Laundry & Cleaning</a>
+                    <a href="real-estate.html">Real Estate</a>
+                    <a href="staffing.html">Staffing</a>
+                    <a href="delivery.html">Delivery</a>
+                    <a href="business-startup.html">Business Startup & Consulting</a>
+                </div>
+            </li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <!-- Password Protection -->
+    <div id="passwordForm" class="password-form">
+        <h2>FA2BEE Admin Access</h2>
+        <p>Enter admin password to access the dashboard</p>
+        <input type="password" id="adminPassword" class="password-input" placeholder="Enter admin password">
+        <button id="loginBtn" class="login-btn">Access Dashboard</button>
+        <div id="errorMessage" class="error-message hidden"></div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="admin-container hidden">
+        <!-- Admin Header -->
+        <div class="admin-header">
+            <div class="admin-title">
+                <h1>FA2BEE Admin Dashboard</h1>
+                <p>Manager Control Panel - Order Management & Statistics</p>
+            </div>
+                <div class="admin-status">
+                    <div class="status-indicator">
+                        <div class="status-dot"></div>
+                        <span>System Online</span>
+                    </div>
+                    <div id="managerStatus" class="status-indicator" style="background: rgba(239, 68, 68, 0.1); border: 1px solid #EF4444; color: #EF4444; display: none;">
+                        <div class="status-dot" style="background: #EF4444;"></div>
+                        <span>Manager Access Required</span>
+                    </div>
+                </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="admin-stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalOrders">0</div>
+                <div class="stat-label">Total Orders</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalRevenue">D0</div>
+                <div class="stat-label">Total Revenue</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="laundryOrders">0</div>
+                <div class="stat-label">Laundry Orders</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="cleaningOrders">0</div>
+                <div class="stat-label">Cleaning Orders</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="salonOrders">0</div>
+                <div class="stat-label">Real Estate Orders</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="urgentOrders">0</div>
+                <div class="stat-label">Urgent Orders</div>
+            </div>
+        </div>
+
+        <!-- Management Tabs -->
+        <div class="management-tabs">
+            <button onclick="showTab('orders')" class="tab-btn active" id="ordersTab">Orders</button>
+            <button onclick="showTab('propertyListings')" class="tab-btn" id="propertyListingsTab">Property Listings</button>
+            <button onclick="showTab('password')" class="tab-btn" id="passwordTab">Change Password</button>
+            <button onclick="showTab('data')" class="tab-btn" id="dataTab">Data Management</button>
+        </div>
+
+        <!-- Orders Section -->
+        <div id="ordersSection" class="orders-section">
+            <div class="orders-header">
+                <div class="orders-title">
+                    <h3>Order Management</h3>
+                    <p>Monitor, filter, and manage customer orders</p>
+                </div>
+                <div class="orders-actions">
+                    <button onclick="refreshOrders()" class="refresh-btn">🔄 Refresh</button>
+                    <button onclick="exportData()" class="refresh-btn" style="background: #10B981;">📊 Export</button>
+                </div>
+            </div>
+            
+            <!-- Order Filters -->
+            <div class="filters-section">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="serviceFilter">Service Type:</label>
+                        <select id="serviceFilter" onchange="filterOrders()">
+                            <option value="">All Services</option>
+                            <option value="laundry">Laundry</option>
+                            <option value="cleaning">Cleaning</option>
+                            <option value="real-estate">Real Estate</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="statusFilter">Status:</label>
+                        <select id="statusFilter" onchange="filterOrders()">
+                            <option value="">All Status</option>
+                            <option value="urgent">Urgent</option>
+                            <option value="express">Express</option>
+                            <option value="normal">Normal</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="dateFilter">Date Range:</label>
+                        <select id="dateFilter" onchange="filterOrders()">
+                            <option value="">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="searchInput">Search:</label>
+                        <input type="text" id="searchInput" placeholder="Search by name, phone, or email..." onkeyup="filterOrders()">
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button onclick="clearFilters()" class="filter-btn">Clear Filters</button>
+                    <span id="orderCount" class="order-count">0 orders found</span>
+                </div>
+            </div>
+            
+            <div class="orders-content">
+                <div id="ordersList">
+                    <div class="no-orders">No orders found. Orders will appear here when customers place them.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Password Management Section -->
+        <div id="passwordSection" class="management-section hidden">
+            <div class="section-header">
+                <h3>Change Admin Password</h3>
+                <p>Update the admin access password for security</p>
+            </div>
+            <div class="password-form">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" class="form-input" placeholder="Enter current password">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" class="form-input" placeholder="Enter new password">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm new password">
+                </div>
+                <button onclick="changePassword()" class="submit-btn">Change Password</button>
+                <div id="passwordMessage" class="message hidden"></div>
+            </div>
+            
+            <!-- Manager Password Section -->
+            <div class="password-form" style="margin-top: 2rem; border-top: 2px solid var(--primary-yellow); padding-top: 2rem;">
+                <h4 style="color: var(--primary-purple); margin-bottom: 1rem;">🔒 Manager Password Settings</h4>
+                <p style="color: var(--medium-gray); margin-bottom: 1.5rem; font-size: 0.9rem;">Manager password is required for sensitive operations like deleting orders and resetting revenue.</p>
+                <div class="form-group">
+                    <label for="currentManagerPassword">Current Manager Password</label>
+                    <input type="password" id="currentManagerPassword" class="form-input" placeholder="Enter current manager password">
+                </div>
+                <div class="form-group">
+                    <label for="newManagerPassword">New Manager Password</label>
+                    <input type="password" id="newManagerPassword" class="form-input" placeholder="Enter new manager password">
+                </div>
+                <div class="form-group">
+                    <label for="confirmManagerPassword">Confirm New Manager Password</label>
+                    <input type="password" id="confirmManagerPassword" class="form-input" placeholder="Confirm new manager password">
+                </div>
+                <button onclick="changeManagerPassword()" class="submit-btn" style="background: var(--gradient-accent);">Change Manager Password</button>
+                <div id="managerPasswordMessage" class="message hidden"></div>
+            </div>
+        </div>
+
+        <!-- Data Management Section -->
+        <div id="dataSection" class="management-section hidden">
+            <div class="section-header">
+                <h3>Data Management</h3>
+                <p>Manage stored orders and reset data</p>
+                <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid #D4AF37; border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                    <p style="color: #fff; margin: 0; font-weight: 600; font-size: 0.9rem;">🔒 Security Notice: Sensitive operations require manager password</p>
+                    <p style="color: #ccc; margin: 0.5rem 0 0 0; font-size: 0.8rem;">Deleting orders, resetting revenue, and clearing data are protected by additional manager authentication.</p>
+                </div>
+            </div>
+            <div class="data-actions">
+                <div class="action-card">
+                    <h4>Reset Revenue</h4>
+                    <p>Reset total revenue counter to zero</p>
+                    <button onclick="resetRevenue()" class="action-btn primary">Reset Revenue</button>
+                </div>
+                <div class="action-card">
+                    <h4>Delete All Orders</h4>
+                    <p>Remove all stored orders from the system</p>
+                    <button onclick="deleteAllOrders()" class="action-btn primary">Delete All Orders</button>
+                </div>
+                <div class="action-card">
+                    <h4>Export Data</h4>
+                    <p>Download all orders as a CSV file</p>
+                    <button onclick="exportData()" class="action-btn primary">Export Data</button>
+                </div>
+                <div class="action-card">
+                    <h4>Clear All Data</h4>
+                    <p>Remove all data including settings and orders</p>
+                    <button onclick="clearAllData()" class="action-btn primary">Clear All Data</button>
+                </div>
+            </div>
+            <div id="dataMessage" class="message hidden"></div>
+        </div>
+    </div>
+
+    <!-- Property Listing Management Section -->
+    <div id="propertyListingsSection" class="orders-section" style="display: none;">
+        <div class="orders-header">
+            <div class="orders-title">
+                <h3>Property Listing Management</h3>
+                <p>Review and approve property listings after payment verification</p>
+            </div>
+            <div class="orders-actions">
+                <button onclick="refreshPropertyListings()" class="refresh-btn">🔄 Refresh</button>
+                <button onclick="exportPropertyData()" class="refresh-btn" style="background: #10B981;">📊 Export</button>
+            </div>
+        </div>
+        
+        <div class="orders-stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalPropertyListings">0</div>
+                <div class="stat-label">Total Listings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="pendingPropertyListings">0</div>
+                <div class="stat-label">Pending Verification</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="approvedPropertyListings">0</div>
+                <div class="stat-label">Approved Listings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="rejectedPropertyListings">0</div>
+                <div class="stat-label">Rejected Listings</div>
+            </div>
+        </div>
+
+        <div class="orders-filters">
+            <select id="propertyListingFilter" onchange="filterPropertyListings()">
+                <option value="all">All Property Listings</option>
+                <option value="pending">Pending Payment Verification</option>
+                <option value="approved">Approved & Live</option>
+                <option value="rejected">Rejected</option>
+            </select>
+        </div>
+
+        <div class="orders-list" id="propertyListingsList">
+            <div class="no-orders">No property listings found.</div>
+        </div>
+    </div>
+
+    <script>
+        // Admin password (stored in localStorage for security)
+        function getAdminPassword() {
+            return localStorage.getItem('fa2bee_admin_password') || 'fa2bee2024';
+        }
+        
+        function setAdminPassword(newPassword) {
+            localStorage.setItem('fa2bee_admin_password', newPassword);
+        }
+        
+        // Manager password for sensitive operations
+        function getManagerPassword() {
+            return localStorage.getItem('fa2bee_manager_password') || 'manager2024';
+        }
+        
+        function setManagerPassword(newPassword) {
+            localStorage.setItem('fa2bee_manager_password', newPassword);
+        }
+        
+        // Check if user has manager access
+        function hasManagerAccess() {
+            return sessionStorage.getItem('fa2bee_manager_access') === 'true';
+        }
+        
+        // Grant manager access
+        function grantManagerAccess() {
+            sessionStorage.setItem('fa2bee_manager_access', 'true');
+            updateManagerStatus();
+        }
+        
+        // Revoke manager access
+        function revokeManagerAccess() {
+            sessionStorage.removeItem('fa2bee_manager_access');
+            updateManagerStatus();
+        }
+        
+        // Update manager status display
+        function updateManagerStatus() {
+            const managerStatus = document.getElementById('managerStatus');
+            if (managerStatus) {
+                if (hasManagerAccess()) {
+                    managerStatus.style.display = 'none';
+                } else {
+                    managerStatus.style.display = 'flex';
+                }
+            }
+        }
+        
+        // Prompt for manager password
+        function promptManagerPassword(action, callback) {
+            const managerPassword = prompt(`🔒 Manager Access Required\n\nTo ${action}, please enter the manager password:`);
+            if (managerPassword === null) {
+                return; // User cancelled
+            }
+            
+            if (managerPassword === getManagerPassword()) {
+                grantManagerAccess();
+                callback();
+            } else {
+                alert('❌ Incorrect manager password. Access denied.');
+            }
+        }
+        
+        // Check admin password
+        function checkPassword() {
+            const password = document.getElementById('adminPassword').value;
+            const errorDiv = document.getElementById('errorMessage');
+            const passwordForm = document.getElementById('passwordForm');
+            const adminDashboard = document.getElementById('adminDashboard');
+            
+            if (password === getAdminPassword()) {
+                passwordForm.classList.add('hidden');
+                adminDashboard.classList.remove('hidden');
+                loadAdminData();
+            } else {
+                errorDiv.textContent = 'Incorrect password. Please try again.';
+                errorDiv.classList.remove('hidden');
+            }
+        }
+        
+        
+        // Force refresh function
+        function forceRefresh() {
+            const orders = getStoredOrders();
+            
+            // Force update statistics
+            updateStatistics(orders);
+            
+            // Force display orders
+            displayOrders(orders);
+        }
+        
+        // Load admin data
+        function loadAdminData() {
+            const orders = getStoredOrders();
+            console.log('Admin: Loading data, found orders:', orders.length);
+            console.log('Admin: Orders data:', orders);
+            updateStatistics(orders);
+            displayOrders(orders);
+        }
+        
+        // Get stored orders from localStorage
+        function getStoredOrders() {
+            const orders = localStorage.getItem('fa2bee_orders');
+            return orders ? JSON.parse(orders) : [];
+        }
+        
+        // Update statistics
+        function updateStatistics(orders) {
+            const totalOrders = orders.length;
+            const totalRevenue = orders.reduce((sum, order) => {
+                const amount = parseFloat(order.total.replace('D', '')) || 0;
+                return sum + amount;
+            }, 0);
+            
+            const laundryOrders = orders.filter(order => order.pickupAddress || order.serviceType === 'laundry').length;
+            const cleaningOrders = orders.filter(order => order.serviceAddress || order.serviceType === 'cleaning').length;
+            const realEstateOrders = orders.filter(order => order.propertyType || order.serviceType === 'real-estate').length;
+            const urgentOrders = orders.filter(order => order.urgency === 'urgent' || order.urgency === 'express').length;
+            
+            document.getElementById('totalOrders').textContent = totalOrders;
+            document.getElementById('totalRevenue').textContent = `D${totalRevenue.toFixed(0)}`;
+            document.getElementById('laundryOrders').textContent = laundryOrders;
+            document.getElementById('cleaningOrders').textContent = cleaningOrders;
+            document.getElementById('salonOrders').textContent = realEstateOrders;
+            document.getElementById('urgentOrders').textContent = urgentOrders;
+        }
+        
+        // Global variable to store all orders
+        let allOrders = [];
+        let filteredOrders = [];
+
+        // Display orders with filtering
+        function displayOrders(orders) {
+            allOrders = orders;
+            filteredOrders = [...orders];
+            applyFilters();
+        }
+
+        // Apply filters to orders
+        function applyFilters() {
+            const serviceFilter = document.getElementById('serviceFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            filteredOrders = allOrders.filter(order => {
+                // Service type filter
+                if (serviceFilter) {
+                    const serviceType = getServiceTypeName(order).toLowerCase();
+                    if (!serviceType.includes(serviceFilter)) return false;
+                }
+
+                // Status filter
+                if (statusFilter) {
+                    const urgency = (order.urgency || 'normal').toLowerCase();
+                    if (urgency !== statusFilter) return false;
+                }
+
+                // Date filter
+                if (dateFilter) {
+                    const orderDate = new Date(order.timestamp);
+                    const now = new Date();
+                    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    
+                    switch (dateFilter) {
+                        case 'today':
+                            if (orderDate < today) return false;
+                            break;
+                        case 'week':
+                            const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            if (orderDate < weekAgo) return false;
+                            break;
+                        case 'month':
+                            const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+                            if (orderDate < monthAgo) return false;
+                            break;
+                    }
+                }
+
+                // Search filter
+                if (searchTerm) {
+                    const searchFields = [
+                        order.customerName || '',
+                        order.customerPhone || '',
+                        order.customerEmail || '',
+                        order.orderId || ''
+                    ];
+                    const searchText = searchFields.join(' ').toLowerCase();
+                    if (!searchText.includes(searchTerm)) return false;
+                }
+
+                return true;
+            });
+
+            renderFilteredOrders();
+        }
+
+        // Render filtered orders
+        function renderFilteredOrders() {
+            const ordersList = document.getElementById('ordersList');
+            const orderCount = document.getElementById('orderCount');
+            
+            orderCount.textContent = `${filteredOrders.length} orders found`;
+            
+            if (filteredOrders.length === 0) {
+                ordersList.innerHTML = '<div class="no-orders">No orders match the current filters. Try adjusting your search criteria.</div>';
+                return;
+            }
+            
+            // Sort orders by timestamp (newest first)
+            const sortedOrders = filteredOrders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            ordersList.innerHTML = sortedOrders.map((order, index) => {
+                const urgency = (order.urgency || 'normal').toLowerCase();
+                const orderId = order.orderId || `FA2BEE-${String(index + 1).padStart(4, '0')}`;
+                
+                return `
+                    <div class="order-item ${urgency}">
+                        <div class="order-status ${urgency}">${urgency}</div>
+                        <div class="order-header">
+                            <div class="order-service">${getServiceTypeName(order)}</div>
+                            <div class="order-total">${order.total}</div>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-detail">
+                                <strong>Order ID:</strong>
+                                <span>${orderId}</span>
+                            </div>
+                            <div class="order-detail">
+                                <strong>Customer:</strong>
+                                <span>${order.customerName}</span>
+                            </div>
+                            <div class="order-detail">
+                                <strong>Phone:</strong>
+                                <span>${order.customerPhone}</span>
+                            </div>
+                            <div class="order-detail">
+                                <strong>Email:</strong>
+                                <span>${order.customerEmail}</span>
+                            </div>
+                            <div class="order-detail">
+                                <strong>Date:</strong>
+                                <span>${order.preferredDate || 'Not specified'}</span>
+                            </div>
+                            <div class="order-detail">
+                                <strong>Time:</strong>
+                                <span>${order.preferredTime || 'Not specified'}</span>
+                            </div>
+                            <div class="order-detail">
+                                <strong>Payment:</strong>
+                                <span>${getPaymentMethodName(order.paymentMethod)}</span>
+                            </div>
+                            ${order.branch ? `<div class="order-detail">
+                                <strong>Branch:</strong>
+                                <span>${getBranchName(order.branch)}</span>
+                            </div>` : ''}
+                            <div class="order-detail">
+                                <strong>Ordered:</strong>
+                                <span>${new Date(order.timestamp).toLocaleString('en-GB', { timeZone: 'Africa/Banjul' })}</span>
+                            </div>
+                        </div>
+                        <div class="order-actions">
+                            <button onclick="viewOrderDetails('${orderId}')" class="action-btn-small primary">View</button>
+                            <button onclick="markAsCompleted('${orderId}')" class="action-btn-small success">✅ Complete</button>
+                            <button onclick="contactCustomer('${order.customerPhone}', '${order.customerName}')" class="action-btn-small warning">Call</button>
+                            <button onclick="deleteOrder('${orderId}')" class="action-btn-small danger">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filter orders function
+        function filterOrders() {
+            applyFilters();
+        }
+
+        // Clear all filters
+        function clearFilters() {
+            document.getElementById('serviceFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('dateFilter').value = '';
+            document.getElementById('searchInput').value = '';
+            applyFilters();
+        }
+
+        // Order management functions
+        function viewOrderDetails(orderId) {
+            const order = allOrders.find(o => o.orderId === orderId);
+            if (order) {
+                alert(`Order Details:\n\nOrder ID: ${orderId}\nCustomer: ${order.customerName}\nPhone: ${order.customerPhone}\nEmail: ${order.customerEmail}\nService: ${getServiceTypeName(order)}\nTotal: ${order.total}\nPayment: ${getPaymentMethodName(order.paymentMethod)}\nDate: ${order.preferredDate || 'Not specified'}\nTime: ${order.preferredTime || 'Not specified'}\nUrgency: ${order.urgency || 'Normal'}`);
+            }
+        }
+
+        function markAsCompleted(orderId) {
+            if (confirm('Mark this order as completed?')) {
+                // Update order status in localStorage
+                const orders = getStoredOrders();
+                const orderIndex = orders.findIndex(o => o.orderId === orderId);
+                if (orderIndex !== -1) {
+                    orders[orderIndex].status = 'completed';
+                    orders[orderIndex].completedAt = new Date().toISOString();
+                    localStorage.setItem('fa2bee_orders', JSON.stringify(orders));
+                    loadAdminData();
+                    alert('Order marked as completed!');
+                }
+            }
+        }
+
+        function contactCustomer(phone, name) {
+            if (confirm(`Call customer ${name} at ${phone}?`)) {
+                window.open(`tel:${phone}`);
+            }
+        }
+
+        function deleteOrder(orderId) {
+            promptManagerPassword('delete this order', function() {
+                if (confirm('Are you sure you want to delete this order? This action cannot be undone.')) {
+                    const orders = getStoredOrders();
+                    const filteredOrders = orders.filter(o => o.orderId !== orderId);
+                    localStorage.setItem('fa2bee_orders', JSON.stringify(filteredOrders));
+                    loadAdminData();
+                    alert('Order deleted successfully!');
+                    revokeManagerAccess();
+                }
+            });
+        }
+        
+        // Refresh orders
+        function refreshOrders() {
+            loadAdminData();
+        }
+        
+        
+        // Get service type name
+        function getServiceTypeName(order) {
+            if (order.childName) {
+                return 'Kids Salon';
+            } else if (order.serviceAddress) {
+                return 'Home Cleaning';
+            } else if (order.pickupAddress) {
+                return 'Laundry Service';
+            }
+            return 'Service';
+        }
+        
+        // Get payment method name
+        function getPaymentMethodName(method) {
+            const methods = {
+                'wave': 'Wave',
+                'mobile-money': 'Mobile Money Transfer',
+                'bank-transfer': 'Bank Transfer',
+                'cash': 'Cash Payment'
+            };
+            return methods[method] || 'Not specified';
+        }
+        
+        // Get branch name
+        function getBranchName(branch) {
+            const branches = {
+                'latrikunda': 'Latrikunda German Branch',
+                'brusubi': 'Brusubi Branch',
+                'banjul': 'Banjul Branch'
+            };
+            return branches[branch] || branch;
+        }
+        
+        // Tab Management
+        function showTab(tabName) {
+            // Hide all sections
+            document.getElementById('ordersSection').classList.add('hidden');
+            document.getElementById('propertyListingsSection').classList.add('hidden');
+            document.getElementById('passwordSection').classList.add('hidden');
+            document.getElementById('dataSection').classList.add('hidden');
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected section and activate tab
+            if (tabName === 'orders') {
+                document.getElementById('ordersSection').classList.remove('hidden');
+                document.getElementById('ordersTab').classList.add('active');
+            } else if (tabName === 'propertyListings') {
+                document.getElementById('propertyListingsSection').classList.remove('hidden');
+                document.getElementById('propertyListingsTab').classList.add('active');
+                loadPropertyListings(); // Load property listings when tab is opened
+            } else if (tabName === 'password') {
+                document.getElementById('passwordSection').classList.remove('hidden');
+                document.getElementById('passwordTab').classList.add('active');
+            } else if (tabName === 'data') {
+                document.getElementById('dataSection').classList.remove('hidden');
+                document.getElementById('dataTab').classList.add('active');
+            }
+        }
+        
+        // Password Management
+        function changePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const messageDiv = document.getElementById('passwordMessage');
+            
+            // Clear previous messages
+            messageDiv.classList.add('hidden');
+            
+            // Validation
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showMessage('passwordMessage', 'Please fill in all fields', 'error');
+                return;
+            }
+            
+            if (currentPassword !== getAdminPassword()) {
+                showMessage('passwordMessage', 'Current password is incorrect', 'error');
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                showMessage('passwordMessage', 'New password must be at least 6 characters long', 'error');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                showMessage('passwordMessage', 'New passwords do not match', 'error');
+                return;
+            }
+            
+            // Change password
+            setAdminPassword(newPassword);
+            showMessage('passwordMessage', 'Password changed successfully!', 'success');
+            
+            // Clear form
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        }
+        
+        // Manager Password Management
+        function changeManagerPassword() {
+            const currentPassword = document.getElementById('currentManagerPassword').value;
+            const newPassword = document.getElementById('newManagerPassword').value;
+            const confirmPassword = document.getElementById('confirmManagerPassword').value;
+            const messageDiv = document.getElementById('managerPasswordMessage');
+            
+            // Clear previous messages
+            messageDiv.classList.add('hidden');
+            
+            // Validation
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showMessage('managerPasswordMessage', 'Please fill in all fields', 'error');
+                return;
+            }
+            
+            if (currentPassword !== getManagerPassword()) {
+                showMessage('managerPasswordMessage', 'Current manager password is incorrect', 'error');
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                showMessage('managerPasswordMessage', 'Manager password must be at least 8 characters long', 'error');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                showMessage('managerPasswordMessage', 'New passwords do not match', 'error');
+                return;
+            }
+            
+            // Change manager password
+            setManagerPassword(newPassword);
+            showMessage('managerPasswordMessage', 'Manager password changed successfully!', 'success');
+            
+            // Clear form
+            document.getElementById('currentManagerPassword').value = '';
+            document.getElementById('newManagerPassword').value = '';
+            document.getElementById('confirmManagerPassword').value = '';
+        }
+        
+        // Data Management Functions
+        function resetRevenue() {
+            promptManagerPassword('reset the revenue counter', function() {
+                if (confirm('Are you sure you want to reset the revenue counter? This action cannot be undone.')) {
+                    // Reset revenue by clearing revenue tracking
+                    localStorage.removeItem('fa2bee_revenue_tracking');
+                    showMessage('dataMessage', 'Revenue counter has been reset', 'success');
+                    loadAdminData(); // Refresh the display
+                    revokeManagerAccess(); // Revoke access after action
+                }
+            });
+        }
+        
+        function deleteAllOrders() {
+            promptManagerPassword('delete all orders', function() {
+                if (confirm('Are you sure you want to delete ALL orders? This action cannot be undone.')) {
+                    localStorage.removeItem('fa2bee_orders');
+                    showMessage('dataMessage', 'All orders have been deleted', 'success');
+                    loadAdminData(); // Refresh the display
+                    revokeManagerAccess(); // Revoke access after action
+                }
+            });
+        }
+        
+        function exportData() {
+            const orders = getStoredOrders();
+            if (orders.length === 0) {
+                showMessage('dataMessage', 'No orders to export', 'error');
+                return;
+            }
+            
+            // Create CSV content
+            let csvContent = 'Order ID,Service Type,Customer Name,Phone,Email,Total,Payment Method,Date,Time,Urgency,Timestamp\n';
+            
+            orders.forEach((order, index) => {
+                const orderId = `FA2BEE-${String(index + 1).padStart(4, '0')}`;
+                const serviceType = getServiceTypeName(order);
+                const timestamp = new Date(order.timestamp).toLocaleString('en-GB', { timeZone: 'Africa/Banjul' });
+                
+                csvContent += `"${orderId}","${serviceType}","${order.customerName || 'N/A'}","${order.customerPhone || 'N/A'}","${order.customerEmail || 'N/A'}","${order.total || 'D0'}","${getPaymentMethodName(order.paymentMethod)}","${order.preferredDate || 'N/A'}","${order.preferredTime || 'N/A'}","${order.urgency || 'Normal'}","${timestamp}"\n`;
+            });
+            
+            // Download CSV file
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `fa2bee_orders_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            showMessage('dataMessage', 'Data exported successfully!', 'success');
+        }
+        
+        function clearAllData() {
+            promptManagerPassword('clear all data', function() {
+                if (confirm('Are you sure you want to clear ALL data including orders, settings, and passwords? This action cannot be undone.')) {
+                    // Clear all FA2BEE related data
+                    const keys = Object.keys(localStorage);
+                    keys.forEach(key => {
+                        if (key.startsWith('fa2bee_')) {
+                            localStorage.removeItem(key);
+                        }
+                    });
+                    
+                    showMessage('dataMessage', 'All data has been cleared. You will need to set a new password.', 'success');
+                    revokeManagerAccess(); // Revoke access after action
+                    
+                    // Redirect to password form
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                }
+            });
+        }
+        
+        // Utility function to show messages
+        function showMessage(elementId, message, type) {
+            const messageDiv = document.getElementById(elementId);
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}`;
+            messageDiv.classList.remove('hidden');
+            
+            // Auto-hide success messages after 3 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    messageDiv.classList.add('hidden');
+                }, 3000);
+            }
+        }
+        
+        // Initialize admin page
+        function initializeAdmin() {
+            // Add event listeners for buttons
+            const loginBtn = document.getElementById('loginBtn');
+            const passwordInput = document.getElementById('adminPassword');
+            
+            if (loginBtn) {
+                loginBtn.addEventListener('click', checkPassword);
+            }
+            
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkPassword();
+                    }
+                });
+            }
+            
+            // Update manager status
+            updateManagerStatus();
+        }
+        
+        // Property Listing Management Functions
+        function refreshPropertyListings() {
+            loadPropertyListings();
+        }
+
+        function loadPropertyListings() {
+            const propertyListings = JSON.parse(localStorage.getItem('propertyListings') || '[]');
+            const approvedListings = JSON.parse(localStorage.getItem('approvedPropertyListings') || '[]');
+            const allListings = [...propertyListings, ...approvedListings];
+            
+            // Update statistics
+            document.getElementById('totalPropertyListings').textContent = allListings.length;
+            document.getElementById('pendingPropertyListings').textContent = propertyListings.length;
+            document.getElementById('approvedPropertyListings').textContent = approvedListings.length;
+            document.getElementById('rejectedPropertyListings').textContent = 0; // No rejected yet
+            
+            // Display listings
+            displayPropertyListings(allListings);
+        }
+
+        function displayPropertyListings(listings) {
+            const container = document.getElementById('propertyListingsList');
+            
+            if (listings.length === 0) {
+                container.innerHTML = '<div class="no-orders">No property listings found.</div>';
+                return;
+            }
+
+            const listingsHTML = listings.map((listing, index) => {
+                const status = listing.status || 'pending_payment_verification';
+                const statusClass = status === 'approved' ? 'status-approved' : 'status-pending';
+                const statusText = status === 'approved' ? 'Approved & Live' : 'Pending Verification';
+                
+                return `
+                    <div class="order-item">
+                        <div class="order-header">
+                            <div class="order-id">Property Listing #${index + 1}</div>
+                            <div class="order-status ${statusClass}">${statusText}</div>
+                            <div class="order-date">${new Date(listing.submittedAt).toLocaleDateString()}</div>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-info">
+                                <div class="info-row">
+                                    <span class="info-label">Property Owner:</span>
+                                    <span class="info-value">${listing.ownerName}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Contact:</span>
+                                    <span class="info-value">${listing.ownerPhone} | ${listing.ownerEmail}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Property:</span>
+                                    <span class="info-value">${listing.propertyTitle}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Asking Price:</span>
+                                    <span class="info-value">D${listing.propertyPrice}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Payment Method:</span>
+                                    <span class="info-value">${listing.paymentMethod}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Payment Reference:</span>
+                                    <span class="info-value">${listing.paymentReference}</span>
+                                </div>
+                            </div>
+                            <div class="order-actions">
+                                ${status === 'pending_payment_verification' ? `
+                                    <button onclick="approvePropertyListing(${index})" class="action-btn success">✅ Approve & List</button>
+                                    <button onclick="rejectPropertyListing(${index})" class="action-btn danger">❌ Reject</button>
+                                ` : `
+                                    <button onclick="viewPropertyDetails(${index})" class="action-btn">View Details</button>
+                                `}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = listingsHTML;
+        }
+
+        function approvePropertyListing(index) {
+            const propertyListings = JSON.parse(localStorage.getItem('propertyListings') || '[]');
+            const listing = propertyListings[index];
+            
+            if (!listing) return;
+            
+            // Move to approved listings
+            const approvedListings = JSON.parse(localStorage.getItem('approvedPropertyListings') || '[]');
+            listing.status = 'approved';
+            listing.approvedAt = new Date().toISOString();
+            listing.listingId = `FA2BEE-PROP-${Date.now()}`;
+            
+            approvedListings.push(listing);
+            propertyListings.splice(index, 1);
+            
+            // Update localStorage
+            localStorage.setItem('propertyListings', JSON.stringify(propertyListings));
+            localStorage.setItem('approvedPropertyListings', JSON.stringify(approvedListings));
+            
+            // Show success message
+            alert(`Property listing approved successfully!\nListing ID: ${listing.listingId}\nThe property is now live on the website.`);
+            
+            // Refresh the display
+            loadPropertyListings();
+        }
+
+        function rejectPropertyListing(index) {
+            const propertyListings = JSON.parse(localStorage.getItem('propertyListings') || '[]');
+            const listing = propertyListings[index];
+            
+            if (!listing) return;
+            
+            const reason = prompt('Please provide a reason for rejection:');
+            if (!reason) return;
+            
+            // Move to rejected listings (for record keeping)
+            const rejectedListings = JSON.parse(localStorage.getItem('rejectedPropertyListings') || '[]');
+            listing.status = 'rejected';
+            listing.rejectedAt = new Date().toISOString();
+            listing.rejectionReason = reason;
+            
+            rejectedListings.push(listing);
+            propertyListings.splice(index, 1);
+            
+            // Update localStorage
+            localStorage.setItem('propertyListings', JSON.stringify(propertyListings));
+            localStorage.setItem('rejectedPropertyListings', JSON.stringify(rejectedListings));
+            
+            // Show rejection message
+            alert(`Property listing rejected.\nReason: ${reason}\nThe client will be notified.`);
+            
+            // Refresh the display
+            loadPropertyListings();
+        }
+
+        function filterPropertyListings() {
+            const filter = document.getElementById('propertyListingFilter').value;
+            const propertyListings = JSON.parse(localStorage.getItem('propertyListings') || '[]');
+            const approvedListings = JSON.parse(localStorage.getItem('approvedPropertyListings') || '[]');
+            const rejectedListings = JSON.parse(localStorage.getItem('rejectedPropertyListings') || '[]');
+            
+            let filteredListings = [];
+            
+            switch(filter) {
+                case 'pending':
+                    filteredListings = propertyListings;
+                    break;
+                case 'approved':
+                    filteredListings = approvedListings;
+                    break;
+                case 'rejected':
+                    filteredListings = rejectedListings;
+                    break;
+                default:
+                    filteredListings = [...propertyListings, ...approvedListings, ...rejectedListings];
+            }
+            
+            displayPropertyListings(filteredListings);
+        }
+
+        function exportPropertyData() {
+            const propertyListings = JSON.parse(localStorage.getItem('propertyListings') || '[]');
+            const approvedListings = JSON.parse(localStorage.getItem('approvedPropertyListings') || '[]');
+            const rejectedListings = JSON.parse(localStorage.getItem('rejectedPropertyListings') || '[]');
+            
+            const allPropertyData = {
+                pending: propertyListings,
+                approved: approvedListings,
+                rejected: rejectedListings,
+                exportedAt: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(allPropertyData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `fa2bee-property-listings-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeAdmin);
+
+        // Mobile menu toggle
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if(window.scrollY > 100) {
+                navbar.style.background = 'rgba(5, 5, 5, 0.95)';
+                navbar.style.padding = '15px 50px';
+            } else {
+                navbar.style.background = 'rgba(10, 10, 10, 0.9)';
+                navbar.style.padding = '25px 50px';
+            }
+        });
+    </script>
+</body>
+</html>
