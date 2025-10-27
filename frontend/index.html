@@ -14,11 +14,6 @@
         }
 
 
-
-
-
-
-
         body {
             font-family: 'Montserrat', sans-serif;
             background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
@@ -195,6 +190,14 @@
             padding: 120px 20px 80px;
             position: relative;
             overflow: hidden;
+
+            & .hero-image-container {
+                margin-top: 6rem;
+                & img {
+                    width: 60%;
+                    height: auto;
+                }
+            }
         }
 
         .hero:before {
@@ -209,19 +212,21 @@
         }
 
         .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 64px;
+            font-family: "Inter", sans-serif;
+            font-size: 7.5rem;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             color: #D4AF37;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            text-shadow: 0 0 3px rgba(212, 175, 55, 0.5);
             opacity: 0;
             transform: translateY(30px);
             animation: fadeInUp 1s ease forwards 0.5s;
+            line-height: 1;
+            letter-spacing: 0.3px;
         }
 
         .hero h2 {
-            font-size: 28px;
+            font-size: 2.8rem;
             font-weight: 300;
             margin-bottom: 40px;
             opacity: 0;
@@ -747,7 +752,8 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <h1>Welcome to FA2BEE</h1>
+        <div class="hero-image-container"><img src="assets/hero-image-1.png" alt="Hero Image"></div>
+        <h1>FA2BEE</h1>
         <h2>The Hive of Services</h2>
         <a href="#services" class="cta-button">Explore Our Services</a>
     </section>
