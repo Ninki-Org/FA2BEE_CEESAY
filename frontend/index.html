@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FA2BEE - The Hive of Services</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap"
+        rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -43,9 +46,9 @@
             font-size: 28px;
             font-weight: 700;
             color: #D4AF37;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
+            /* display: flex; */
+            /* align-items: center;
+            text-decoration: none; */
         }
 
         .logo .fa2bee-text {
@@ -58,17 +61,24 @@
             /* background: linear-gradient(135deg, #D4AF37, #B8941F); */
             /* border: 2px solid #D4AF37; */
             /* border-radius: 8px; */
-            margin-right: 10px;
+            /* margin-right: 10px;
             display: flex;
-            align-items: center;
+            align-items: center; */
             /* justify-content: center; */
-            font-size: 16px;
+            /* outline: 1px dashed #D4AF37; */
+            width: 100%;
+            /* height: 200px; */
+            overflow: hidden;
+            display: flex;
+            justify-content: start;
+            align-items: center;
             color: #000;
             font-weight: bold;
 
             & img {
                 width: 16%;
                 height: auto;
+                object-fit: contain;
             }
         }
 
@@ -89,7 +99,6 @@
         .nav-links li {
             margin-left: 30px;
             /* position: relative; */
-
         }
 
         .nav-links a {
@@ -127,6 +136,11 @@
         /* Dropdown Menu */
         .dropdown {
             position: relative;
+            & a {
+                display: flex;
+                align-items: center;
+
+            }
         }
 
         .dropdown-content {
@@ -193,6 +207,7 @@
 
             & .hero-image-container {
                 margin-top: 6rem;
+
                 & img {
                     width: 60%;
                     height: auto;
@@ -523,9 +538,12 @@
         }
 
         @keyframes float {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0);
             }
+
             50% {
                 transform: translateY(-10px);
             }
@@ -541,27 +559,27 @@
                 width: 180px;
                 height: 210px;
             }
-            
+
             .hive-row:first-child {
                 margin-bottom: -32px;
             }
-            
+
             .hive-row:nth-child(2) {
                 margin-bottom: -32px;
             }
-            
+
             .hive-row:nth-child(2) .hexagon {
                 margin: 0 8px;
             }
-            
+
             .hive-row:last-child .hexagon {
                 margin: 0 4px;
             }
-            
+
             .hexagon i {
                 font-size: 36px;
             }
-            
+
             .hexagon span {
                 font-size: 14px;
             }
@@ -571,52 +589,52 @@
             .hero h1 {
                 font-size: 48px;
             }
-            
+
             .hero h2 {
                 font-size: 22px;
             }
-            
+
             .hexagon {
                 width: 160px;
                 height: 185px;
             }
-            
+
             .hive-row:first-child {
                 margin-bottom: -28px;
             }
-            
+
             .hive-row:nth-child(2) {
                 margin-bottom: -28px;
             }
-            
+
             .hive-row:nth-child(2) .hexagon {
                 margin: 0 6px;
             }
-            
+
             .hive-row:last-child .hexagon {
                 margin: 0 3px;
             }
-            
+
             .hexagon i {
                 font-size: 32px;
             }
-            
+
             .hexagon span {
                 font-size: 13px;
             }
-            
+
             .section-title {
                 font-size: 36px;
             }
-            
+
             .hive-heading {
                 font-size: 36px;
             }
-            
+
             .tagline {
                 font-size: 18px;
             }
-            
+
             .nav-links {
                 display: none;
                 position: absolute;
@@ -628,11 +646,11 @@
                 padding: 20px 0;
                 border-top: 1px solid rgba(212, 175, 55, 0.3);
             }
-            
+
             .nav-links.active {
                 display: flex;
             }
-            
+
             .nav-links li {
                 margin: 15px 0;
                 text-align: center;
@@ -653,7 +671,7 @@
             .nav-links.active .dropdown:hover .dropdown-content {
                 display: block;
             }
-            
+
             .menu-toggle {
                 display: block;
             }
@@ -663,78 +681,77 @@
             .navbar {
                 padding: 20px;
             }
-            
+
             .hero {
                 padding: 100px 20px 60px;
             }
-            
+
             .hero h1 {
                 font-size: 36px;
             }
-            
+
             .hero h2 {
                 font-size: 18px;
             }
-            
+
             .cta-button {
                 padding: 12px 30px;
                 font-size: 16px;
             }
-            
+
             .hive-row {
                 flex-wrap: wrap;
                 justify-content: center;
                 margin-bottom: 0 !important;
             }
-            
+
             .hexagon {
                 width: 140px;
                 height: 160px;
                 margin: 10px !important;
             }
-            
+
             .hexagon i {
                 font-size: 28px;
             }
-            
+
             .hexagon span {
                 font-size: 12px;
             }
-            
+
             .section-title {
                 font-size: 28px;
             }
-            
+
             .hive-heading {
                 font-size: 28px;
             }
-            
+
             .tagline {
                 font-size: 16px;
             }
-            
+
             .about-content {
                 font-size: 16px;
             }
         }
     </style>
 </head>
+
 <body>
     <!-- Navigation -->
-        <nav class="navbar">
+    <nav class="navbar">
         <a href="index.html" class="logo">
             <div class="logo-placeholder">
-                <img src="./assets/fa2-logo.png"
-                fill
-                width"50"
-                alt="logo">
-            </div> 
+                <img src="./assets/fa2-logo.png" width"50" alt="logo">
+            </div>
             <!-- <span class="fa2bee-text">FA2BEE</span> -->
         </a>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li class="dropdown">
-                <a href="#services">Services <i class="fas fa-chevron-down" style="margin-left: 8px; font-size: 12px;"></i></a>
+                <a href="#services">Services <i class="fas fa-chevron-down"
+                        style="margin-left: 8px; font-size: 12px;"></i></a>
                 <div class="dropdown-content">
                     <a href="laundry-cleaning.html">Laundry & Cleaning</a>
                     <a href="real-estate.html">Real Estate</a>
@@ -744,11 +761,11 @@
             </li>
             <li><a href="about.html">About</a></li>
             <li><a href="#contact">Contact</a></li>
-                </ul>
+        </ul>
         <div class="menu-toggle">
             <i class="fas fa-bars"></i>
-            </div>
-        </nav>
+        </div>
+    </nav>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
@@ -769,49 +786,49 @@
                         <div class="hexagon-content">
                             <i class="fas fa-house"></i>
                             <span>Real Estate</span>
-                </div>
+                        </div>
                     </a>
                 </div>
-                
+
                 <!-- Second row with 2 hexagons -->
                 <div class="hive-row">
                     <a href="construction.html" class="hexagon">
                         <div class="hexagon-content">
                             <i class="fas fa-hammer"></i>
                             <span>Construction</span>
-                </div>
+                        </div>
                     </a>
                     <a href="business-startup.html" class="hexagon">
                         <div class="hexagon-content">
                             <i class="fas fa-chart-line"></i>
                             <span>Business Startup & Consulting</span>
-            </div>
+                        </div>
                     </a>
-        </div>
-                
+                </div>
+
                 <!-- Third row with 3 hexagons -->
                 <div class="hive-row">
                     <a href="staffing.html" class="hexagon">
                         <div class="hexagon-content">
                             <i class="fas fa-user-tie"></i>
                             <span>Staffing Agency</span>
-                </div>
+                        </div>
                     </a>
                     <a href="delivery.html" class="hexagon">
                         <div class="hexagon-content">
                             <i class="fas fa-truck"></i>
                             <span>Delivery Solutions</span>
-                </div>
+                        </div>
                     </a>
                     <a href="laundry-cleaning.html" class="hexagon">
                         <div class="hexagon-content">
                             <i class="fas fa-soap"></i>
                             <span>Laundry & Cleaning</span>
-                </div>
+                        </div>
                     </a>
                 </div>
             </div>
-            
+
             <h1 class="hive-heading">THE HIVE OF SERVICES</h1>
             <p class="tagline">An empire that builds, manages, delivers, and sustains.</p>
         </div>
@@ -821,9 +838,12 @@
     <section class="about-section" id="about">
         <h2 class="section-title">About FA2BEE</h2>
         <div class="about-content">
-            <p>At FA2BEE, we believe in providing exceptional service that exceeds your expectations. Our team of trained professionals is dedicated to delivering quality results with every service.</p>
-            <p>We offer convenient pickup and delivery options, competitive pricing, and a 100% satisfaction guarantee. Experience the difference of professional service in The Gambia.</p>
-            <p>Our hive of services includes professional laundry and cleaning, real estate solutions, staffing agency services, and delivery solutions - all designed to make your life easier and more efficient.</p>
+            <p>At FA2BEE, we believe in providing exceptional service that exceeds your expectations. Our team of
+                trained professionals is dedicated to delivering quality results with every service.</p>
+            <p>We offer convenient pickup and delivery options, competitive pricing, and a 100% satisfaction guarantee.
+                Experience the difference of professional service in The Gambia.</p>
+            <p>Our hive of services includes professional laundry and cleaning, real estate solutions, staffing agency
+                services, and delivery solutions - all designed to make your life easier and more efficient.</p>
         </div>
     </section>
 
@@ -836,14 +856,15 @@
             <a href="#"><i class="fab fa-twitter"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                </div>
+        </div>
         <p class="copyright">&copy; 2024 Ninki. All rights reserved. | The Hive of Services</p>
-        <a href="admin.html" id="adminLink" style="color: #666; font-size: 10px; text-decoration: none; opacity: 0.3; margin-top: 10px;">admin</a>
+        <a href="admin.html" id="adminLink"
+            style="color: #666; font-size: 10px; text-decoration: none; opacity: 0.3; margin-top: 10px;">admin</a>
     </footer>
 
     <script>
         // Mobile menu toggle
-        document.querySelector('.menu-toggle').addEventListener('click', function() {
+        document.querySelector('.menu-toggle').addEventListener('click', function () {
             document.querySelector('.nav-links').classList.toggle('active');
         });
 
@@ -852,15 +873,15 @@
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
+                if (targetId === '#') return;
+
                 const targetElement = document.querySelector(targetId);
-                if(targetElement) {
+                if (targetElement) {
                     window.scrollTo({
                         top: targetElement.offsetTop - 80,
                         behavior: 'smooth'
                     });
-                    
+
                     // Close mobile menu if open
                     document.querySelector('.nav-links').classList.remove('active');
                 }
@@ -868,9 +889,9 @@
         });
 
         // Navbar background on scroll
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             const navbar = document.querySelector('.navbar');
-            if(window.scrollY > 100) {
+            if (window.scrollY > 100) {
                 navbar.style.background = 'rgba(5, 5, 5, 0.95)';
                 navbar.style.padding = '15px 50px';
             } else {
@@ -880,14 +901,14 @@
         });
 
         // Hexagon animation on load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const hexagons = document.querySelectorAll('.hexagon');
             hexagons.forEach((hexagon, index) => {
                 setTimeout(() => {
                     hexagon.style.opacity = '0';
                     hexagon.style.transform = 'scale(0.8)';
                     hexagon.style.transition = 'all 0.5s ease';
-                    
+
                     setTimeout(() => {
                         hexagon.style.opacity = '1';
                         hexagon.style.transform = 'scale(1)';
@@ -897,4 +918,5 @@
         });
     </script>
 </body>
+
 </html>
