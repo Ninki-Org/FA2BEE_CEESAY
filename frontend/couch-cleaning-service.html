@@ -10,15 +10,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #FFC107;
-            --primary-dark: #FFA000;
-            --secondary: #2196F3;
+            --primary: #D4AF37;
+            --primary-dark: #D4AF37;
+            --secondary: #D4AF37;
             --dark: #333333;
-            --light: #F5F5F5;
-            --white: #FFFFFF;
-            --gray: #757575;
-            --light-gray: #E0E0E0;
-            --success: #4CAF50;
+            --light: #050505ff;
+            --white: #060606ff;
+            --gray: #080808ff;
+            --light-gray: #070707ff;
+            --success: #D4AF37;
         }
 
         * {
@@ -30,7 +30,7 @@
         body {
             font-family: 'Montserrat', sans-serif;
             background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
-            color: #fff;
+            color: #d4af37;
             overflow-x: hidden;
             line-height: 1.6;
         }
@@ -274,6 +274,8 @@
             background-color: var(--primary-dark);
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            scale: 1;
+
         }
 
         .btn-secondary {
@@ -281,7 +283,7 @@
         }
 
         .btn-secondary:hover {
-            background-color: #1976D2;
+            scale: 1.05
         }
 
         /* Section Styles */
@@ -296,12 +298,12 @@
 
         .section-title h2 {
             font-size: 36px;
-            color: var(--dark);
+            color: #D4AF37;
             margin-bottom: 15px;
         }
 
         .section-title p {
-            color: var(--gray);
+            color: #D4AF37;
             max-width: 600px;
             margin: 0 auto;
         }
@@ -335,10 +337,11 @@
         .service-card h3 {
             font-size: 20px;
             margin-bottom: 15px;
+            color: #D4AF37
         }
 
         .service-card p {
-            color: var(--gray);
+            color: #fff;
         }
 
         /* Booking Form */
@@ -366,10 +369,12 @@
         .form-control {
             width: 100%;
             padding: 12px 15px;
-            border: 1px solid var(--light-gray);
+            border: 1px solid #D4AF37;
             border-radius: 5px;
             font-size: 16px;
             transition: border-color 0.3s;
+            background-color: #000;
+            color: #fff;
         }
 
         .form-control:focus {
@@ -384,7 +389,7 @@
         }
 
         .price-display {
-            background-color: var(--white);
+            background-color: rgba(212, 175, 55, 0.1);
             padding: 25px;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
